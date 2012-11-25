@@ -33,7 +33,7 @@ public class Stage {
 	
 	// Define altitude and light source for shadows
 	public static float alt = Gummies.mHeight;
-	public static PVector source = new PVector(Gummies.mWidth/5, Gummies.mHeight/5);
+	public static PVector source = new PVector(Gummies.mWidth/2, Gummies.mHeight/2);
 
 	Stage(PApplet parent_) {
 		parent = parent_;

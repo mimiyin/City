@@ -9,6 +9,7 @@ package gummies;
 
 import java.util.ArrayList;
 
+
 import mpe.client.*;
 
 import processing.core.*;
@@ -69,18 +70,20 @@ public class Gummies extends PApplet {
 			client = new TCPClient(path, this);
 			// Not rendering with OPENGL for local testing
 			if (local) {
-				size((int)(client.getLWidth()*scale), (int)(client.getLHeight()*scale));
+				size((int)(client.getLWidth()*scale), (int)(client.getLHeight()*scale), P2D);
 				client.setLocalDimensions((int)(ID*client.getLWidth()*scale), 0, (int)(client.getLWidth()*scale), (int)(client.getLHeight()*scale));
 			} else {
 				size(client.getLWidth(), client.getLHeight(), P2D);
 			}
+			
+			
 			// the size is determined by the client's local width and height
 			mWidth = client.getMWidth();
 			mHeight = client.getMHeight();
 			
 		} else {
 			// Otherwise with no library, force size
-			size(parseInt(11520*scale),parseInt(1080*scale));
+			size(parseInt(11520*scale),parseInt(1080*scale), P2D);
 			mWidth = 11520;
 			mHeight = 1080;
 		}
@@ -131,7 +134,7 @@ public class Gummies extends PApplet {
 		if (!MPE || local) {
 			scale(scale);
 		}
-		
+				
 		stage.run();
 	}
 

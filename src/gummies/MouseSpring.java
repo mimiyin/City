@@ -74,7 +74,7 @@ public class MouseSpring {
 		Vec2 mp = box2d.coordPixelsToWorld(center);
 		md.target.set(mp);
 
-		PApplet.println("Body Coordinates: " + mp);
+		//PApplet.println("Body Coordinates: " + mp);
 
 		// Set properties.
 		md.maxForce = 1000000.0f; //(float)Gummies.mWidth*10000000;

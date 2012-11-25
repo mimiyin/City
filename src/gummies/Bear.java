@@ -84,7 +84,7 @@ public class Bear {
 		float xAnchor = dir * parent.noise(Stage.t + parent.random(10))
 				* screenWidth * -1;
 		float k = dir * parent.noise(Stage.t + parent.random(100))
-				* parent.noise(Stage.t) * parent.random(0.01f);
+				* parent.noise(Stage.t) * parent.random(0.05f);
 		spring = new Spring(parent, xAnchor, k);
 
 		// Create shadow		
@@ -145,7 +145,7 @@ public class Bear {
 
 	// Turn the bear either to the right or left
 	void turn() {
-		r_angle += parent.noise(Stage.t) * 0.25 * dir;
+		r_angle += parent.noise(Stage.t) * 0.15 * dir;
 	}
 
 	// Grow the bear...up to a point

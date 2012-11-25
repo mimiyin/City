@@ -4,6 +4,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
 
+
 public class Shadow {
 	PVector[] points, corners, shadow;
 	float alt;
@@ -35,14 +36,14 @@ public class Shadow {
 	// Draw the shadow with texture mapping
 	void display() {
 		parent.noStroke();
-		parent.fill(0, 33);
+		parent.tint(0, 17);
 		parent.beginShape();
-		// parent.texture(img);
+		parent.texture(img);
 		for (int p = 0; p < shadow.length; p++) {
-			//parent.vertex(shadow[p].x, shadow[p].y, corners[p].x, corners[p].y);
-			parent.vertex(shadow[p].x, shadow[p].y);
+			parent.vertex(shadow[p].x, shadow[p].y, corners[p].x, corners[p].y);
 		}
 		parent.endShape();
+		parent.noTint();
 
 	}
 
