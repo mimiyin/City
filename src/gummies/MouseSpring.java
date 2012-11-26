@@ -33,9 +33,9 @@ public class MouseSpring {
 	void update() {
 		// PApplet.println("Mouse Position: " + parent.mouseX);
 		
-		Vec2 mouseWorld = box2d.coordPixelsToWorld((float) parent.mouseX / Gummies.scale, (float) parent.mouseY / Gummies.scale);
+		//Vec2 mouseWorld = box2d.coordPixelsToWorld((float) parent.mouseX / Gummies.scale, (float) parent.mouseY / Gummies.scale);
 		
-		mj.setTarget(mouseWorld);
+		//mj.setTarget(mouseWorld);
 	}
 
 	void display() {

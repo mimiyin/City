@@ -6,10 +6,10 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
-import org.jbox2d.dynamics.joints.*;
 
 import pbox2d.PBox2D;
 import processing.core.PApplet;
+import processing.core.PVector;
 
 public class Box {
 	PApplet parent;
@@ -21,15 +21,21 @@ public class Box {
 
 	// A reference to our box2d world
 	PBox2D box2d;
+	Vec2 pos, vel;
+
+	boolean isBlown = false;
 
 	// Constructor
 	Box(PApplet p, PBox2D box2d_, float x, float y) {
 		parent = p;
 		box2d = box2d_;
-		w = parent.random(40, 160);
-		h = parent.random(40, 160);
+		w = parent.random(150, 500);
+		h = parent.random(150, 500);
+		pos = new Vec2(x, y);
+		vel = new Vec2(0, 0);
+
 		// Add the box to the box2d world
-		makeBody(new Vec2(x, y), w, h);
+		makeBody(pos, w, h);
 	}
 
 	// This function removes the particle from the box2d world
@@ -52,7 +58,7 @@ public class Box {
 	// Drawing the box
 	void display() {
 		// We look at each body and get its screen position
-		Vec2 pos = box2d.getBodyPixelCoord(body);
+		pos = box2d.getBodyPixelCoord(body);
 		// Get its angle of rotation
 		float a = body.getAngle();
 
@@ -79,9 +85,9 @@ public class Box {
 		FixtureDef fd = new FixtureDef();
 		fd.shape = sd;
 		// Parameters that affect physics
-		fd.density = 1000;
-		fd.friction = (float) 0.3;
-		fd.restitution = (float) 0.5;
+		fd.density = 0.01f;
+		fd.friction = 0.0f;
+		fd.restitution = 1.0f;
 
 		// Define the body and make it from the shape
 		BodyDef bd = new BodyDef();
@@ -90,12 +96,8 @@ public class Box {
 
 		body = box2d.createBody(bd);
 		body.createFixture(fd);
-
-		// Give it some initial random velocity
-		body.setLinearVelocity(new Vec2(parent.random(-50, 50), parent.random(
-				-5000, -10000 )));
-		body.setAngularVelocity(parent.random(-50, 50));
+		
+	    body.setLinearVelocity(new Vec2(parent.random(-5, 5), parent.random(2, 5)));
+	    body.setAngularVelocity(parent.random(-5, 5));
 	}
-
 }
-

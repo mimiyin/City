@@ -69,10 +69,8 @@ public class Stage {
 		// Constantly change size, rotation, opacity and strength of springs for
 		// each bear
 		for (int i = 0; i < bears.size(); i++) {
-
-			Bear thisBear = (Bear) bears.get(i);
+			Bear thisBear = bears.get(i);
 			thisBear.run();
-
 			// If bear reach right side of window, kill it.
 			if (thisBear.die())
 				bears.remove(thisBear);
@@ -83,7 +81,7 @@ public class Stage {
 		
 		// Boxes fall from the top every so often
 		if (parent.random(1) <.05) {
-			Box p = new Box(parent, box2d, Gummies.mWidth / 2, 30);
+			Box p = new Box(parent, box2d, parent.random(Gummies.mWidth), 30);
 			boxes.add(p);
 		}
 
@@ -94,8 +92,8 @@ public class Stage {
 		}
 
 		// Display all the boxes
-		for (Box b : boxes) {
-			b.display();
+		for (Box box : boxes) {
+			box.display();
 		}
 
 		// Boxes that leave the screen, we delete them
@@ -113,12 +111,12 @@ public class Stage {
 		// Create new springs and bears at a controlled rate
 		int toss = PApplet.parseInt(parent.random(1000));
 		if (toss % 25 == 0) {
-		//if(bears.size() < 1) {
+		//if(bears.size() == 0) {
 			// When launching new bears...
 			// Choose a color gummy at random
 			bears.add(new Bear(parent, gummyImgs[PApplet.parseInt(parent
 					.random(0, gummyImgs.length))], (parent.noise(t
-					+ parent.random(100)) * 100)));
+					+ parent.random(100)) * 100), box2d));
 
 			t += parent.random(-1, 5);
 		}
