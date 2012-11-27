@@ -26,8 +26,6 @@ public class Stage {
 	// A reference to our box2d world
 	PBox2D box2d;
 
-	// A list we'll use to track fixed objects
-	ArrayList<Boundary> boundaries;
 	// A list for all of our rectangles
 	ArrayList<Box> boxes;
 	
@@ -52,11 +50,6 @@ public class Stage {
 
 		// Create ArrayLists
 		boxes = new ArrayList<Box>();
-		boundaries = new ArrayList<Boundary>();
-
-		// Add a bunch of fixed boundaries
-		boundaries.add(new Boundary(parent, box2d, Gummies.mWidth / 2,
-				Gummies.mHeight / 2));
 	}
 
 	void run() {
@@ -83,12 +76,6 @@ public class Stage {
 		if (parent.random(1) <.05) {
 			Box p = new Box(parent, box2d, parent.random(Gummies.mWidth), 30);
 			boxes.add(p);
-		}
-
-		// Display all the boundaries
-		for (Boundary wall : boundaries) {
-			wall.update();
-			wall.display();
 		}
 
 		// Display all the boxes
