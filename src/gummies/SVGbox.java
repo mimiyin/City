@@ -1,41 +1,33 @@
 package gummies;
 
-import org.jbox2d.collision.shapes.PolygonShape;
-import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.FixtureDef;
+import org.jbox2d.collision.shapes.*;
+import org.jbox2d.common.*;
+import org.jbox2d.dynamics.*;
 
-import pbox2d.PBox2D;
-import processing.core.PApplet;
-import processing.core.PVector;
+import pbox2d.*;
+import processing.core.*;
 
-public class Box {
+public class SVGbox {
 	PApplet parent;
 
-	// We need to keep track of a Body and a width and height
+	// We need to keep track of a Body and a width and height and color
 	Body body;
 	float w;
 	float h;
+	float c;
 
 	// A reference to our box2d world
 	PBox2D box2d;
-	Vec2 pos, vel;
-
-	boolean isBlown = false;
 
 	// Constructor
-	Box(PApplet p, PBox2D box2d_, float x, float y) {
+	SVGbox(PApplet p, PBox2D box2d_, PShape s, float _c) {
 		parent = p;
 		box2d = box2d_;
-		w = parent.random(150, 500);
-		h = parent.random(150, 500);
-		pos = new Vec2(x, y);
-		vel = new Vec2(0, 0);
-
+		w = s.getParam(2);
+		h = s.getParam(3);
+		c = _c;
 		// Add the box to the box2d world
-		makeBody(pos, w, h);
+		makeBody(new Vec2(s.getParam(0), s.getParam(1)), w, h);
 	}
 
 	// This function removes the particle from the box2d world
@@ -58,7 +50,7 @@ public class Box {
 	// Drawing the box
 	void display() {
 		// We look at each body and get its screen position
-		pos = box2d.getBodyPixelCoord(body);
+		Vec2 pos = box2d.getBodyPixelCoord(body);
 		// Get its angle of rotation
 		float a = body.getAngle();
 
@@ -66,7 +58,7 @@ public class Box {
 		parent.pushMatrix();
 		parent.translate(pos.x, pos.y);
 		parent.rotate(-a);
-		parent.fill(175);
+		parent.fill(c);
 		parent.stroke(0);
 		parent.rect(0, 0, w, h);
 		parent.popMatrix();
@@ -85,9 +77,9 @@ public class Box {
 		FixtureDef fd = new FixtureDef();
 		fd.shape = sd;
 		// Parameters that affect physics
-		fd.density = 0.01f;
-		fd.friction = 0.0f;
-		fd.restitution = 0.0f;
+		fd.density = 1000;
+		fd.friction = (float) 0.3;
+		fd.restitution = (float) 0.5;
 
 		// Define the body and make it from the shape
 		BodyDef bd = new BodyDef();
@@ -96,8 +88,12 @@ public class Box {
 
 		body = box2d.createBody(bd);
 		body.createFixture(fd);
-		
-	    body.setLinearVelocity(new Vec2(parent.random(-5, 5), parent.random(2, 5)));
-	    body.setAngularVelocity(parent.random(-5, 5));
+
+		// Give it some initial random velocity
+		body.setLinearVelocity(new Vec2(parent.random(-50, 50), parent.random(
+				-5000, -10000 )));
+		body.setAngularVelocity(parent.random(-50, 50));
 	}
+
 }
+
