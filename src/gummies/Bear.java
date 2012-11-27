@@ -56,7 +56,6 @@ public class Bear {
 		if (dir < 0)
 			startX = screenWidth;
 		
-		PApplet.println("Dir: " + dir + "\tStart: " + startX);
 		// Starting location, speed and acceleration of bear
 		location = new PVector(startX, height / 2);
 		velocity = new PVector(0, 0);
@@ -180,10 +179,8 @@ public class Bear {
 
 	// Kill the bear if it exist off the right side of the screen
 	boolean die() {
-		if (location.x > screenWidth*2 || location.x < -screenWidth ) {
-			PApplet.println("DIE DIE DIE DIE DIE DIE DIE DIE: " + location.x);
+		if (location.x > screenWidth*2 || location.x < -screenWidth )
 			return true;
-		}
 		else
 			return false;
 	}
