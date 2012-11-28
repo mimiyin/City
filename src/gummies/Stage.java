@@ -10,34 +10,43 @@ import processing.core.PShape;
 
 public class Stage {
 	PApplet parent;
+	
+	///////////////////////////////////////////////////////
+	//////////////////////////WIND/////////////////////////
+	///////////////////////////////////////////////////////
 
 	ArrayList<Spring> springs = new ArrayList<Spring>();
 	ArrayList<Bear> bears = new ArrayList<Bear>();
 
-	public static int t;
 	PImage[] gummyImgs = new PImage[3];
 	PImage gummyMask, sky;
-
-	// A reference to our box2d world
-	PBox2D box2d;
-
-	// A list for all of our rectangles
-	ArrayList<Box> boxes;
-
-	// create water line
-	Water water;
-
-	// create boxes derived from svg file
-	PShape bigfileb, bigfilew;
-
-	// make boxes from pshapes
-	ArrayList<SVGbox> svgboxes;
-
+	
 	// Define altitude and light source for shadows
 	public static float alt = Gummies.mHeight;
 	public static PVector source = new PVector(Gummies.mWidth / 2,
 			Gummies.mHeight / 2);
+	
+	// Used for generating noise across a number of wind classes
+	public static int t;
 
+	///////////////////////////////////////////////////////
+	/////////////////////////BOX2D/////////////////////////
+	///////////////////////////////////////////////////////
+
+	// A reference to our box2d world
+	PBox2D box2d;
+	
+	// Create boxes derived from svg file
+	PShape bigfileb, bigfilew;
+
+	// Make boxes from pshapes
+	ArrayList<SVGbox> svgboxes;
+
+	// Create water line
+	Water water;
+	
+	Settings settings;
+	
 	Stage(PApplet parent_) {
 		parent = parent_;
 		t = PApplet.parseInt(parent.random(1000));
@@ -53,22 +62,31 @@ public class Stage {
 		box2d = new PBox2D(parent);
 		box2d.createWorld();
 
-		// Create ArrayLists
-		boxes = new ArrayList<Box>();
+		// Load settings file
+		String[] data = parent.loadStrings("settings.txt");
+		String blackLetters = data[0];
+		String whiteLetters = data[1];
+		float floodStart = PApplet.parseFloat(data[2]);
+		float floodEnd = PApplet.parseFloat(data[3]);
+		float floodRate = PApplet.parseFloat(data[4]);
+		float waveHeight = PApplet.parseFloat(data[5]);
+		float launchRate = PApplet.parseFloat(data[6]);
+		
+		settings = new Settings(parent, blackLetters, whiteLetters, floodStart, floodEnd, floodRate, waveHeight, launchRate);
 
 		// Create the water
-		water = new Water(parent, box2d);
+		water = new Water(parent, box2d, settings);
 
-		// Load up black box pshapes
-		bigfileb = parent.loadShape("bigfile3b.svg");
+		// Load up black box PShapes
+		bigfileb = settings.blackLetters;
 
-		// Load up white box pshapes
-		bigfilew = parent.loadShape("bigfile3w.svg");
+		// Load up white box PShapes
+		bigfilew = settings.whiteLetters;
 
 		// Create boxes from square
 		svgboxes = new ArrayList<SVGbox>();
 
-		// Send pshapes to the arraylist of SVGbox
+		// Send PShapes to the ArrayList of SVGbox
 		for (int i = 0; i < bigfileb.getChildCount(); i++) {
 			SVGbox bx = new SVGbox(parent, box2d, bigfileb.getChild(i),
 					(float) 0);
@@ -83,8 +101,7 @@ public class Stage {
 
 	void run() {
 
-		if (bears.size() < 100)
-			launchGummies();
+		launchGummies();
 
 		parent.image(sky, 0, 0, Gummies.mWidth, Gummies.mHeight);
 
@@ -100,26 +117,6 @@ public class Stage {
 
 		// We must always step through time!
 		box2d.step();
-
-		// Boxes fall from the top every so often
-		if (parent.random(1) < .05) {
-			Box p = new Box(parent, box2d, parent.random(Gummies.mWidth), 30);
-			boxes.add(p);
-		}
-
-		// Display all the boxes
-		for (Box box : boxes) {
-			box.display();
-		}
-
-		// Boxes that leave the screen, we delete them
-		// (note they have to be deleted from both the box2d world and our list
-		for (int i = boxes.size() - 1; i >= 0; i--) {
-			Box b = boxes.get(i);
-			if (b.done()) {
-				boxes.remove(i);
-			}
-		}
 
 		// Display our svgboxes
 		for (int i = 0; i < svgboxes.size(); i++) {
@@ -145,7 +142,7 @@ public class Stage {
 
 		// Create new springs and bears at a controlled rate
 		int toss = PApplet.parseInt(parent.random(1000));
-		if (toss % 25 == 0) {
+		if (toss % settings.launchRate == 0) {
 			// if(bears.size() == 0) {
 			// When launching new bears...
 			// Choose a color gummy at random
