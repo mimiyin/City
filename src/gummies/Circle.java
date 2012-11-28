@@ -53,12 +53,16 @@ public class Circle {
 	void display() {
 		// We look at each body and get its screen position
 		Vec2 pos = box2d.getBodyPixelCoord(body);
+		float h = Gummies.mHeight - pos.y;
 		parent.pushMatrix();
 		parent.translate(pos.x, pos.y);
 		PApplet.println(pos);
 		parent.fill(0, 33);
 		parent.noStroke();
-		parent.ellipse(0, 0, r * 2, r * 2);
+		//parent.ellipse(0, 0, r * 2, r * 2);
+		parent.rectMode(PApplet.CORNER);
+		parent.rect(0,0,r*2, h);
+		parent.rectMode(PApplet.CENTER);
 		parent.popMatrix();
 	}
 }
