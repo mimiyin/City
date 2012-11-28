@@ -1,0 +1,5 @@
+bigfile3b.svg
+bigfile3w.svg
+1080
+540
+0.5
