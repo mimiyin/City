@@ -59,6 +59,9 @@ public class Circle {
 		parent.fill(0, 33);
 		parent.noStroke();
 		parent.ellipse(0, 0, r * 2, r * 2);
+		parent.rectMode(PApplet.CORNER);
+		parent.rect(0,0,r*2, Gummies.mHeight*2);
+		parent.rectMode(PApplet.CENTER);
 		parent.popMatrix();
 	}
 }
