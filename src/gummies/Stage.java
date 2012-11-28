@@ -45,16 +45,7 @@ public class Stage {
 	// Create water line
 	Water water;
 	
-	// Load settings file
-//	String[] data = parent.loadStrings("settings.txt");
-	String blackLetters = "bigfile3b.svg"; //data[0];
-	String whiteLetters = "bigfile3w.svg"; //data[1];
-	float floodStart = 1080; //PApplet.parseFloat(data[2]);
-	float floodEnd = 540; //PApplet.parseFloat(data[3]);
-	float floodRate = 0.5f; //PApplet.parseFloat(data[4]);
-	
-	Settings settings = new Settings(parent, blackLetters, whiteLetters, floodStart, floodEnd, floodRate);
-
+	Settings settings;
 	
 	Stage(PApplet parent_) {
 		parent = parent_;
@@ -70,6 +61,18 @@ public class Stage {
 		// Initialize box2d physics and create the world
 		box2d = new PBox2D(parent);
 		box2d.createWorld();
+
+		// Load settings file
+		String[] data = parent.loadStrings("settings.txt");
+		String blackLetters = data[0];
+		String whiteLetters = data[1];
+		float floodStart = PApplet.parseFloat(data[2]);
+		float floodEnd = PApplet.parseFloat(data[3]);
+		float floodRate = PApplet.parseFloat(data[4]);
+		float waveHeight = PApplet.parseFloat(data[5]);
+		float launchRate = PApplet.parseFloat(data[6]);
+		
+		settings = new Settings(parent, blackLetters, whiteLetters, floodStart, floodEnd, floodRate, waveHeight, launchRate);
 
 		// Create the water
 		water = new Water(parent, box2d, settings);
@@ -98,8 +101,7 @@ public class Stage {
 
 	void run() {
 
-		if (bears.size() < 100)
-			launchGummies();
+		launchGummies();
 
 		parent.image(sky, 0, 0, Gummies.mWidth, Gummies.mHeight);
 
@@ -140,7 +142,7 @@ public class Stage {
 
 		// Create new springs and bears at a controlled rate
 		int toss = PApplet.parseInt(parent.random(1000));
-		if (toss % 25 == 0) {
+		if (toss % settings.launchRate == 0) {
 			// if(bears.size() == 0) {
 			// When launching new bears...
 			// Choose a color gummy at random

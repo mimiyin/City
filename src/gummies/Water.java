@@ -52,7 +52,7 @@ class Water {
 		
 		float dx = 0.005f;
 		float dy = 0.01f;
-		float amplitude = 150.0f;
+		float amplitude = settings.waveHeight;
 
 		// Increment y ('time')
 		yoff += dy;
