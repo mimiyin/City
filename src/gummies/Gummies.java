@@ -20,7 +20,7 @@ public class Gummies extends PApplet {
 	
 	// Set it to 1 for actual size, 0.5 for half size, etc.
 	// This is useful for testing MPE locally and scaling it down to fit to your screen
-	public static float scale = 0.125f;
+	public static float scale = .125f;
 
 	// if this is true, it will use the MPE library, otherwise just run stand-alone
 	public static boolean MPE = false;

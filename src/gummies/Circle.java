@@ -59,7 +59,7 @@ public class Circle {
 		PApplet.println(pos);
 		parent.fill(0, 33);
 		parent.noStroke();
-		parent.ellipse(0, 0, r * 2, r * 2);
+		//parent.ellipse(0, 0, r * 2, r * 2);
 		parent.rectMode(PApplet.CORNER);
 		parent.rect(0,0,r*2, h);
 		parent.rectMode(PApplet.CENTER);
