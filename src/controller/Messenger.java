@@ -18,6 +18,8 @@ public class Messenger extends PApplet {
 	PFont font;
 
 	boolean message = false;
+	
+	int decay = 0;
 
 	//--------------------------------------
 	public void setup() {
@@ -41,7 +43,7 @@ public class Messenger extends PApplet {
 	//--------------------------------------
 	public void draw() {
 		background(255);
-		String msg = mouseX + ",255," + mouseY;
+		String msg = Integer.toString(decay);
 		client.broadcast(msg);
 		textFont(font);
 		fill(0);
@@ -53,5 +55,6 @@ public class Messenger extends PApplet {
 	//--------------------------------------
 	static public void main(String args[]) {
 		PApplet.main(new String[] { "controller.Messenger" });
+		
 	}
 }

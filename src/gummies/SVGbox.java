@@ -12,6 +12,7 @@ public class SVGbox {
 
 	// We need to keep track of a Body and a width and height and color
 	Body body;
+	Vec2 initPos;
 	float w;
 	float h;
 	float c;
@@ -23,11 +24,13 @@ public class SVGbox {
 	SVGbox(PApplet p, PBox2D box2d_, PShape s, float _c) {
 		parent = p;
 		box2d = box2d_;
+		initPos = new Vec2(s.getParam(0), s.getParam(1));
 		w = s.getParam(2);
 		h = s.getParam(3);
 		c = _c;
+
 		// Add the box to the box2d world
-		makeBody(new Vec2(s.getParam(0), s.getParam(1)), w, h);
+		makeBody(initPos, w, h);
 	}
 
 	// This function removes the particle from the box2d world
@@ -90,10 +93,26 @@ public class SVGbox {
 		body.createFixture(fd);
 
 		// Give it some initial random velocity
-		body.setLinearVelocity(new Vec2(parent.random(-50, 50), parent.random(
-				-5000, -10000 )));
-		body.setAngularVelocity(parent.random(-50, 50));
+		// body.setLinearVelocity(new Vec2(parent.random(-50, 50),
+		// parent.random(
+		// -5000, -10000 )));
+		// body.setAngularVelocity(parent.random(-50, 50));
+		body.setActive(false);
+	}
+
+	void restore(float waterLine) {
+		if(waterLine > initPos.y) {
+			body.setType(BodyType.KINEMATIC);
+			Vec2 pos = body.getWorldCenter();
+			Vec2 target = box2d.coordPixelsToWorld(initPos);
+			Vec2 diff = new Vec2(target.x - pos.x, target.y - pos.y);
+			diff.mulLocal(50);
+			body.setLinearVelocity(diff);
+		}
+	}
+
+	void setActive(boolean isActive) {
+		body.setActive(isActive);
 	}
 
 }
-

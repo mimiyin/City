@@ -36,7 +36,7 @@ public class Gummies extends PApplet {
 	// These we'll use for master width and height instead of Processing's built-in variables
 	public static int mWidth;
 	public static int mHeight;
-
+	
 	Stage stage;
 	
 	

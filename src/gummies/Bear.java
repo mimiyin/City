@@ -237,7 +237,6 @@ public class Bear {
 		    parent.rotate(a);
 		    parent.fill(175);
 		    parent.stroke(0);
-		    parent.image(gummy, 0,0,width,height);
 		    parent.popMatrix();
 		  }
 

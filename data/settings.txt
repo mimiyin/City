@@ -1,7 +1,10 @@
-bigfile3b.svg
-bigfile3w.svg
-1080
-540
-0.5
-500
-25
+title: Title of Piece
+names: Collabo Rator, Col Laborator
+floodStart: 830
+floodEnd: 780
+floodRate: -1
+waveHeight: 100
+launchRate: 5
+decayStart: 10
+decayEnd: 30
+decayRate: 1

@@ -61,8 +61,12 @@ public class Circle {
 		parent.noStroke();
 		//parent.ellipse(0, 0, r * 2, r * 2);
 		parent.rectMode(PApplet.CORNER);
-		parent.rect(0,0,r*2, h);
-		parent.rectMode(PApplet.CENTER);
+		parent.rect(0,  0, r*2, h);
+//		float interval = 10;
+//		for(int i = 0; i < h; i += interval) {
+//			parent.rect(0,interval*i,r*2, interval);
+//			parent.rectMode(PApplet.CENTER);
+//		}
 		parent.popMatrix();
 	}
 }

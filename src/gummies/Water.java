@@ -47,8 +47,8 @@ class Water {
 
 	void update() {
 		// Make the water line go up, to a certain point
-		if(waterLine > settings.floodEnd)
-			waterLine -= settings.floodRate;
+		if(waterLine < settings.floodEnd)
+			waterLine += settings.floodRate;
 		
 		float dx = 0.005f;
 		float dy = 0.01f;
