@@ -1,5 +1,6 @@
 package gummies;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import org.jbox2d.common.Vec2;
@@ -24,10 +25,12 @@ public class Stage {
 	int skyHeight;
 
 	// Credits
+	float tilt;
 	PFont credits;
 	float creditsCenterX;
-	float titleCenterY;
-	float namesCenterY;
+	float creditsCenterY;
+	float titleYOffset;
+	float namesYOffset;
 
 	// /////////////////////////////////////////////////////
 	// ////////////////////////WIND/////////////////////////
@@ -89,39 +92,17 @@ public class Stage {
 		signboxes = new ArrayList<SignBox>();
 
 		// Create skyline
-		skyline = parent.loadImage("data/skyline.png");
-		skyWidth = PApplet.parseInt(1.15f * Gummies.mWidth);
-		skyHeight = PApplet.parseInt(1.8f * Gummies.mHeight);
+		initSkyline();
 
-		// Create and set font for credits
-		// PFont tempCredits = parent.loadFont("data/adbxtra.ttf");
-		credits = parent.createFont("data/AuXDotBitC.ttf", 540);
-		parent.textFont(credits);
-		// Center-align text
-		parent.textAlign(PApplet.CENTER);
-		creditsCenterX = Gummies.mWidth / 2;
-		titleCenterY = Gummies.mHeight / 2 - 50;
-		namesCenterY = titleCenterY + 150;
-
-		// Create background for credits
-		parent.textSize(128);
-		float textWidth = parent.textWidth(settings.names) + 100;
-		int resolution = 50;
-		for (int col = 0; col <= (int) textWidth; col += resolution) {
-			for (int row = 0; row < 500; row += resolution) {
-				float thisX = col + (creditsCenterX - textWidth / 2);
-				float thisY = row + 250;
-				signboxes.add(new SignBox(parent, box2d, new Vec2(thisX,
-						thisY), resolution, 0));
-			}
-		}
+		// Initialize signage
+		initSignage();
 
 	}
 
 	void run() {
 
 		// Draw the skyline
-		parent.image(skyline, -500, -600, skyWidth, skyHeight);
+		parent.image(skyline, 0, -Gummies.mHeight/2, skyWidth, skyHeight);
 
 		// Blow the wind
 		launchGummies();
@@ -151,7 +132,8 @@ public class Stage {
 		}
 		parent.stroke(0);
 		parent.strokeWeight(100);
-		parent.line(Gummies.mWidth/2, Gummies.mHeight/2, Gummies.mWidth/2-100, Gummies.mHeight);
+		parent.line(Gummies.mWidth / 2, Gummies.mHeight / 2,
+				Gummies.mWidth / 2 - 100, Gummies.mHeight);
 		parent.strokeWeight(1);
 		parent.noStroke();
 
@@ -165,11 +147,15 @@ public class Stage {
 		}
 
 		// Display credits
+		parent.pushMatrix();
+		parent.translate(creditsCenterX, creditsCenterY);
+		parent.rotate(tilt);
 		parent.fill(255);
 		parent.textSize(256);
-		parent.text(settings.title, creditsCenterX, titleCenterY);
+		parent.text(settings.title, 0, titleYOffset);
 		parent.textSize(128);
-		parent.text(settings.names, creditsCenterX, namesCenterY);
+		parent.text(settings.names, 0, namesYOffset);
+		parent.popMatrix();
 
 		// Display water
 		water.display();
@@ -207,5 +193,75 @@ public class Stage {
 		settings = new Settings(parent, title, names, floodStart, floodEnd,
 				floodRate, waveHeight, launchRate, decayRate);
 
+	}
+
+	void initSignage() {
+		// Create and set font for credits
+		// PFont tempCredits = parent.loadFont("data/adbxtra.ttf");
+		credits = parent.createFont("data/AuXDotBitC.ttf", 540);
+		parent.textFont(credits);
+		// Center-align text
+		parent.textAlign(PApplet.CENTER);
+		creditsCenterX = Gummies.mWidth / 2;
+		creditsCenterY = Gummies.mHeight / 2;
+		titleYOffset = -15;
+		namesYOffset = 160;
+
+		// Create background for credits
+		parent.textSize(128);
+		int signWidth = PApplet
+				.parseInt(parent.textWidth(settings.names) + 100);
+		int signHeight = 500;
+		Vec2 signCenter = new Vec2(signWidth / 2 - 25, signHeight / 2);
+		float signXOffset = creditsCenterX - (signWidth / 2);
+		float signYOffset = signHeight/2;
+		int res = 50;
+		// How much to tilt the sign
+		tilt = PApplet.PI / 36;
+
+		for (int col = 0; col <= signWidth; col += res) {
+			for (int row = 0; row < 500; row += res) {
+				Vec2 loc = new Vec2(col, row);
+				// Find the angle of rotation for this point relative to the
+				// center of the sign
+				float direction = PApplet.atan2(signCenter.y - loc.y,
+						signCenter.x - loc.x);
+				// Calculate the distance between this point and the center of
+				// the sign
+				float radius = signCenter.sub(loc).length();
+				// Calculate the x,y location of this point with added tilt,
+				// relative to center of sign
+				// Add offsets so the sign appears in the center
+				loc.x = signCenter.x + radius * PApplet.cos(direction + tilt)
+						+ signXOffset;
+				loc.y = signCenter.y + radius * PApplet.sin(direction + tilt)
+						+ signYOffset;
+				float color = 0;
+				signboxes
+						.add(new SignBox(parent, box2d, loc, res, tilt, color));
+			}
+		}
+	}
+
+	void initSkyline() {
+		skyline = parent.loadImage("data/skyline-saved.jpg");
+		skyWidth = PApplet.parseInt(Gummies.mWidth);
+		skyHeight = PApplet.parseInt(1.5f * Gummies.mHeight);		
+//		skyline.resize(skyWidth, skyHeight);
+//		skyline.loadPixels();
+//
+//		
+//		for (int i = 0; i < skyWidth; i++) {
+//			for (int j = 0; j < skyHeight; j++) {
+//				int c = skyline.get(i, j);
+//				float bright = parent.brightness(c);
+//				if (bright > 100) {
+//					float dynamicFill = PApplet.map(j, 2 * (skyHeight / 3), skyHeight, 200, 0);
+//					int cellColor = parent.color(dynamicFill);
+//					skyline.set(i, j, cellColor);
+//					}					
+//				}
+//			}
+//		skyline.updatePixels();
 	}
 }

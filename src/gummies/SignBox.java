@@ -15,19 +15,21 @@ public class SignBox {
 	Vec2 initPos;
 	float w;
 	float h;
-	float c;
+	float tilt;
+	float color;
 
 	// A reference to our box2d world
 	PBox2D box2d;
 
 	// Constructor
-	SignBox(PApplet p, PBox2D box2d_, Vec2 pos, int _r, float _c) {
+	SignBox(PApplet p, PBox2D box2d_, Vec2 pos, int _res, float _tilt, float _color) {
 		parent = p;
 		box2d = box2d_;
 		initPos = pos;
-		w = _r; 
-		h = _r;
-		c = _c;
+		w = _res; 
+		h = _res;
+		tilt = _tilt;
+		color = _color;
 
 		// Add the box to the box2d world
 		makeBody(initPos, w, h);
@@ -61,7 +63,7 @@ public class SignBox {
 		parent.pushMatrix();
 		parent.translate(pos.x, pos.y);
 		parent.rotate(-a);
-		parent.fill(c);
+		parent.fill(color);
 		parent.stroke(0, 128);
 		parent.rect(0, 0, w, h);
 		parent.popMatrix();
@@ -87,7 +89,8 @@ public class SignBox {
 		// Define the body and make it from the shape
 		BodyDef bd = new BodyDef();
 		bd.type = BodyType.DYNAMIC;
-		bd.position.set(box2d.coordPixelsToWorld(center));
+		Vec2 box2dCenter = box2d.coordPixelsToWorld(center);
+		bd.position.set(box2dCenter);
 
 		body = box2d.createBody(bd);
 		body.createFixture(fd);
@@ -97,6 +100,7 @@ public class SignBox {
 		// parent.random(
 		// -5000, -10000 )));
 		// body.setAngularVelocity(parent.random(-50, 50));
+		body.setTransform(box2dCenter, -tilt);
 		body.setActive(false);
 	}
 
