@@ -5,9 +5,9 @@ import processing.core.PShape;
 public class Settings {
 	PApplet parent;
 	String title, names;
-	float floodStart, floodEnd, floodRate, waveHeight, launchRate, decayStart, decayEnd, decayRate;
+	float floodStart, floodEnd, floodRate, waveHeight, launchRate, decayRate;
 	
-	Settings(PApplet p, String t, String n, float fS, float fE, float fR, float wH, float lR, float dS, float dE, float dR) {
+	Settings(PApplet p, String t, String n, float fS, float fE, float fR, float wH, float lR, float dR) {
 		parent = p;
 		title = t;
 		names = n;
@@ -16,8 +16,6 @@ public class Settings {
 		floodRate = fR;
 		waveHeight = wH;
 		launchRate = lR;
-		decayStart = dS;
-		decayEnd = dE;
 		decayRate = dR;
 	}
 

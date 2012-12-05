@@ -56,7 +56,6 @@ public class Circle {
 		float h = Gummies.mHeight - pos.y;
 		parent.pushMatrix();
 		parent.translate(pos.x, pos.y);
-		PApplet.println(pos);
 		parent.fill(0, 33);
 		parent.noStroke();
 		//parent.ellipse(0, 0, r * 2, r * 2);

@@ -7,7 +7,7 @@ import org.jbox2d.dynamics.*;
 import pbox2d.*;
 import processing.core.*;
 
-public class SVGbox {
+public class SignBox {
 	PApplet parent;
 
 	// We need to keep track of a Body and a width and height and color
@@ -21,12 +21,12 @@ public class SVGbox {
 	PBox2D box2d;
 
 	// Constructor
-	SVGbox(PApplet p, PBox2D box2d_, PShape s, float _c) {
+	SignBox(PApplet p, PBox2D box2d_, Vec2 pos, int _r, float _c) {
 		parent = p;
 		box2d = box2d_;
-		initPos = new Vec2(s.getParam(0), s.getParam(1));
-		w = s.getParam(2);
-		h = s.getParam(3);
+		initPos = pos;
+		w = _r; 
+		h = _r;
 		c = _c;
 
 		// Add the box to the box2d world
@@ -57,12 +57,12 @@ public class SVGbox {
 		// Get its angle of rotation
 		float a = body.getAngle();
 
-		parent.rectMode(parent.CENTER);
+		parent.rectMode(PApplet.CENTER);
 		parent.pushMatrix();
 		parent.translate(pos.x, pos.y);
 		parent.rotate(-a);
 		parent.fill(c);
-		parent.stroke(0);
+		parent.stroke(0, 128);
 		parent.rect(0, 0, w, h);
 		parent.popMatrix();
 	}
@@ -80,9 +80,9 @@ public class SVGbox {
 		FixtureDef fd = new FixtureDef();
 		fd.shape = sd;
 		// Parameters that affect physics
-		fd.density = 1000;
-		fd.friction = (float) 0.3;
-		fd.restitution = (float) 0.5;
+		fd.density = 10;
+		fd.friction = (float) 1.0;
+		fd.restitution = (float) 0.1;
 
 		// Define the body and make it from the shape
 		BodyDef bd = new BodyDef();

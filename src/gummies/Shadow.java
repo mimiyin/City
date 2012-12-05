@@ -36,7 +36,7 @@ public class Shadow {
 	// Draw the shadow with texture mapping
 	void display() {
 		parent.noStroke();
-		parent.tint(0, 17);
+		parent.tint(0, 11);
 		parent.beginShape();
 		parent.texture(img);
 		for (int p = 0; p < shadow.length; p++) {

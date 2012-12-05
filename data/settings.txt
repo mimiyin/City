@@ -1,10 +1,8 @@
-title: Title of Piece
+title: Title Of Piece
 names: Collabo Rator, Col Laborator
-floodStart: 830
-floodEnd: 780
+floodStart: 950
+floodEnd: 700
 floodRate: -1
-waveHeight: 100
+waveHeight: 200
 launchRate: 5
-decayStart: 10
-decayEnd: 30
-decayRate: 1
+decayRate: .1
