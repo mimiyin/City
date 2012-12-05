@@ -99,5 +99,6 @@ public class Box {
 		
 	    body.setLinearVelocity(new Vec2(parent.random(-5, 5), parent.random(2, 5)));
 	    body.setAngularVelocity(parent.random(-5, 5));
+	    body.setActive(false);
 	}
 }

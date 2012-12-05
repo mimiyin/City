@@ -7,27 +7,32 @@ import org.jbox2d.dynamics.*;
 import pbox2d.*;
 import processing.core.*;
 
-public class SVGbox {
+public class SignBox {
 	PApplet parent;
 
 	// We need to keep track of a Body and a width and height and color
 	Body body;
+	Vec2 initPos;
 	float w;
 	float h;
-	float c;
+	float tilt;
+	float color;
 
 	// A reference to our box2d world
 	PBox2D box2d;
 
 	// Constructor
-	SVGbox(PApplet p, PBox2D box2d_, PShape s, float _c) {
+	SignBox(PApplet p, PBox2D box2d_, Vec2 pos, int _res, float _tilt, float _color) {
 		parent = p;
 		box2d = box2d_;
-		w = s.getParam(2);
-		h = s.getParam(3);
-		c = _c;
+		initPos = pos;
+		w = _res; 
+		h = _res;
+		tilt = _tilt;
+		color = _color;
+
 		// Add the box to the box2d world
-		makeBody(new Vec2(s.getParam(0), s.getParam(1)), w, h);
+		makeBody(initPos, w, h);
 	}
 
 	// This function removes the particle from the box2d world
@@ -54,12 +59,12 @@ public class SVGbox {
 		// Get its angle of rotation
 		float a = body.getAngle();
 
-		parent.rectMode(parent.CENTER);
+		parent.rectMode(PApplet.CENTER);
 		parent.pushMatrix();
 		parent.translate(pos.x, pos.y);
 		parent.rotate(-a);
-		parent.fill(c);
-		parent.stroke(0);
+		parent.fill(color);
+		parent.stroke(0, 128);
 		parent.rect(0, 0, w, h);
 		parent.popMatrix();
 	}
@@ -77,23 +82,41 @@ public class SVGbox {
 		FixtureDef fd = new FixtureDef();
 		fd.shape = sd;
 		// Parameters that affect physics
-		fd.density = 1000;
-		fd.friction = (float) 0.3;
-		fd.restitution = (float) 0.5;
+		fd.density = 10;
+		fd.friction = (float) 1.0;
+		fd.restitution = (float) 0.1;
 
 		// Define the body and make it from the shape
 		BodyDef bd = new BodyDef();
 		bd.type = BodyType.DYNAMIC;
-		bd.position.set(box2d.coordPixelsToWorld(center));
+		Vec2 box2dCenter = box2d.coordPixelsToWorld(center);
+		bd.position.set(box2dCenter);
 
 		body = box2d.createBody(bd);
 		body.createFixture(fd);
 
 		// Give it some initial random velocity
-		body.setLinearVelocity(new Vec2(parent.random(-50, 50), parent.random(
-				-5000, -10000 )));
-		body.setAngularVelocity(parent.random(-50, 50));
+		// body.setLinearVelocity(new Vec2(parent.random(-50, 50),
+		// parent.random(
+		// -5000, -10000 )));
+		// body.setAngularVelocity(parent.random(-50, 50));
+		body.setTransform(box2dCenter, -tilt);
+		body.setActive(false);
+	}
+
+	void restore(float waterLine) {
+		if(waterLine > initPos.y) {
+			body.setType(BodyType.KINEMATIC);
+			Vec2 pos = body.getWorldCenter();
+			Vec2 target = box2d.coordPixelsToWorld(initPos);
+			Vec2 diff = new Vec2(target.x - pos.x, target.y - pos.y);
+			diff.mulLocal(50);
+			body.setLinearVelocity(diff);
+		}
+	}
+
+	void setActive(boolean isActive) {
+		body.setActive(isActive);
 	}
 
 }
-

@@ -4,18 +4,19 @@ import processing.core.PShape;
 
 public class Settings {
 	PApplet parent;
-	PShape blackLetters, whiteLetters;
-	float floodStart, floodEnd, floodRate, waveHeight, launchRate;
+	String title, names;
+	float floodStart, floodEnd, floodRate, waveHeight, launchRate, decayRate;
 	
-	Settings(PApplet p, String bL, String wL, float fS, float fE, float fR, float wH, float lR) {
+	Settings(PApplet p, String t, String n, float fS, float fE, float fR, float wH, float lR, float dR) {
 		parent = p;
-		blackLetters = parent.loadShape(bL);
-		whiteLetters = parent.loadShape(wL);
+		title = t;
+		names = n;
 		floodStart = fS;
 		floodEnd = fE;
 		floodRate = fR;
 		waveHeight = wH;
 		launchRate = lR;
+		decayRate = dR;
 	}
 
 }

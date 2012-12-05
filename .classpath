@@ -14,5 +14,7 @@
 	<classpathentry kind="lib" path="lib/pbox2d/jbox2d_2.1.2_ds_v2.jar"/>
 	<classpathentry kind="lib" path="lib/pbox2d/pbox2d.jar"/>
 	<classpathentry kind="lib" path="lib/GLGraphics/library/GLGraphics.jar"/>
+	<classpathentry kind="lib" path="lib/opengl/gluegen-rt-natives-macosx-universal.jar"/>
+	<classpathentry kind="lib" path="lib/opengl/jogl-all-natives-macosx-universal.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
