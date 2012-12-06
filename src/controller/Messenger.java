@@ -19,13 +19,13 @@ public class Messenger extends PApplet {
 
 	boolean message = false;
 	
-	int decay = 0;
+	int bg = -1;
 
 	//--------------------------------------
 	public void setup() {
 		// set up the client
 		// For testing locally
-		// client = new AsyncClient("localhost",9003);
+		//client = new AsyncClient("localhost",9003);
 		
 		// At NYU
 		client = new AsyncClient("128.122.151.64",9003);
@@ -42,11 +42,17 @@ public class Messenger extends PApplet {
 
 	//--------------------------------------
 	public void draw() {
-		background(255);
-		String msg = Integer.toString(decay);
+		background(0);
+		if(keyPressed && keyCode == UP)
+			bg++;
+		else if(keyPressed && keyCode == DOWN)
+			bg--;
+		bg = constrain(bg, -1, 1);
+		
+		String msg = Integer.toString(bg);
 		client.broadcast(msg);
 		textFont(font);
-		fill(0);
+		fill(255);
 		text("Broadcasting: " + msg,25,height/2);
 	}
 

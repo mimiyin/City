@@ -28,7 +28,6 @@ public class Stage {
 	// Credits
 	Sign centerSign;
 
-
 	// /////////////////////////////////////////////////////
 	// ////////////////////////WIND/////////////////////////
 	// /////////////////////////////////////////////////////
@@ -82,8 +81,8 @@ public class Stage {
 		// Create skyline
 		initSkyline();
 
-		Vec2 centerSignPos = new Vec2(Gummies.mWidth/2, Gummies.mHeight/2);
-		float tilt = PApplet.PI/36;
+		Vec2 centerSignPos = new Vec2(Gummies.mWidth / 2, Gummies.mHeight / 2);
+		float tilt = PApplet.PI / 36;
 		float titleYOffset = 0;
 		float namesYOffset = 160;
 		float titleTextSize = 256;
@@ -92,15 +91,17 @@ public class Stage {
 		float res = 50;
 		float margin = 100;
 		float signHeight = 500;
-		centerSign = new Sign(parent, box2d, settings, centerSignPos, tilt, titleYOffset, namesYOffset, titleTextSize, namesTextSize, multiLineTitle, font, res, margin, signHeight);
+		centerSign = new Sign(parent, box2d, settings, centerSignPos, tilt,
+				titleYOffset, namesYOffset, titleTextSize, namesTextSize,
+				multiLineTitle, font, res, margin, signHeight);
 
 	}
 
 	void run() {
 
 		// Draw the skyline
-		parent.image(skyline, -300, -Gummies.mHeight/2, skyWidth, skyHeight);
-		
+		parent.image(skyline, -300, -Gummies.mHeight / 2, skyWidth, skyHeight);
+
 		// Blow the wind
 		launchGummies();
 
@@ -116,10 +117,10 @@ public class Stage {
 
 		// We must always step through time!
 		box2d.step();
-		
-		//Display credits
+
+		// Display credits
 		centerSign.display();
-		
+
 		// Display water
 		water.display();
 		water.update();
@@ -144,12 +145,12 @@ public class Stage {
 	void loadSettings() {
 		String[] data = parent.loadStrings("settings.txt");
 		String delim = ": ";
-		String [] title = data[0].split(delim)[1].split("_");
-		
+		String[] title = data[0].split(delim)[1].split("_");
+
 		// Check to see if title is multi-line
-		if(title.length > 1)
+		if (title.length > 1)
 			multiLineTitle = true;
-		
+
 		String names = data[1].split(delim)[1];
 		float floodStart = PApplet.parseFloat(data[2].split(delim)[1]);
 		float floodEnd = PApplet.parseFloat(data[3].split(delim)[1]);
@@ -163,25 +164,33 @@ public class Stage {
 
 	}
 
-	
-
 	void initSkyline() {
 		skyline = parent.loadImage("data/skyline.jpg");
-		skyWidth = PApplet.parseInt(1.05f*Gummies.mWidth);
-		skyHeight = PApplet.parseInt(1.7f*Gummies.mHeight);		
-//		skyline.resize(skyWidth, skyHeight);
-//		skyline.loadPixels();
-//		for (int i = 0; i < skyline.width; i++) {
-//			for (int j = 0; j < skyline.height; j++) {
-//				int loc = i + j*skyline.width;
-//				int c = skyline.get(i, j);
-//				float bright = parent.brightness(c);
-//				if (bright > 100) {
-//					float dynamicFill = PApplet.map(j, 2 * (skyWidth / 3), skyHeight, 200, 0);
-//					skyline.pixels[loc] = parent.color(dynamicFill);
-//					}					
-//				}
-//			}
-//		skyline.updatePixels();
+		skyWidth = PApplet.parseInt(1.05f * Gummies.mWidth);
+		skyHeight = PApplet.parseInt(1.7f * Gummies.mHeight);
+		// skyline.resize(skyWidth, skyHeight);
+		// skyline.loadPixels();
+		// for (int i = 0; i < skyline.width; i++) {
+		// for (int j = 0; j < skyline.height; j++) {
+		// int loc = i + j*skyline.width;
+		// int c = skyline.get(i, j);
+		// float bright = parent.brightness(c);
+		// if (bright > 100) {
+		// float dynamicFill = PApplet.map(j, 2 * (skyWidth / 3), skyHeight,
+		// 200, 0);
+		// skyline.pixels[loc] = parent.color(dynamicFill);
+		// }
+		// }
+		// }
+		// skyline.updatePixels();
+	}
+
+	void updateSkyline(int whichSkyline) {
+		if (whichSkyline == -1)
+			skyline = parent.loadImage("data/skyline.jpg");
+		else if (whichSkyline == 0)
+			skyline = parent.loadImage("data/skyline-masked.jpg");
+		else if (whichSkyline == 1)
+			skyline = parent.loadImage("data/skyline-saved.jpg");
 	}
 }
