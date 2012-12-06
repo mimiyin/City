@@ -1,0 +1,98 @@
+title: Big Screens 2012
+names: The 2013 Edition
+floodStart: 950
+floodEnd: 900
+floodRate: -1
+waveHeight: 50
+launchRate: 2
+decayRate: .001
+
+title: Sense of Place, Sense of Self
+names: Jason Scott Rosen, Karolina Rodrigues Ziulkoski, Dulphe Pinheiro Machado 
+floodStart: 900
+floodEnd: 850
+floodRate: -1
+waveHeight: 60
+launchRate: 5
+decayRate: .1
+
+title: Splat!
+names: Federico Zannier, Phil Groman, Danne Woo
+floodStart: 850
+floodEnd: 800
+floodRate: -1
+waveHeight: 90
+launchRate: 10
+decayRate: .1
+
+title: No. 787,412_Art of Transmitting Electrical Energy Through the Natural medium
+names: Amik Ahmad, Alex Samoilescu, Roopa Vasudevan 
+floodStart: 800
+floodEnd: 830
+floodRate: 1
+waveHeight: 60
+launchRate: 2
+decayRate: .1
+
+title: The Grumpy Wind in Wonderland
+names: Jihyun Lee, Lisa Park 
+floodStart: 830
+floodEnd: 750
+floodRate: -1
+waveHeight: 250
+launchRate: 25
+decayRate: .1
+
+title: Untitled
+names: Tony Lim, Mehan Jayasuriya
+floodStart: 750
+floodEnd: 750
+floodRate: -1
+waveHeight: 200
+launchRate: 25
+decayRate: .1
+
+title: Naturopolis
+names: Kim Ash, Melissa dela Merced
+floodStart: 780
+floodEnd: 780
+floodRate: -1
+waveHeight: 150
+launchRate: 20
+decayRate: .1
+
+title: Untitled
+names: Adria Navarro Lopez, DI
+floodStart: 780
+floodEnd: 780
+floodRate: -1
+waveHeight: 125
+launchRate: 15
+decayRate: .1
+
+title: Terra Nova
+names: Oya Kosebay, Evan Emolo 
+floodStart: 780
+floodEnd: 800
+floodRate: 1
+waveHeight: 100
+launchRate: 15
+decayRate: .1
+
+title: Mixed Signals
+names: Amelia Hancock, Sarah Hallacher 
+floodStart: 800
+floodEnd: 830
+floodRate: 1
+waveHeight: 80
+launchRate: 10
+decayRate: .1
+
+title: Pussy Avalance
+names: Johann Diedrick, Rose Schlossberg 
+floodStart: 800
+floodEnd: 830
+floodRate: 1
+waveHeight: 80
+launchRate: 10
+decayRate: .1

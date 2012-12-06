@@ -1,8 +1,8 @@
-title: Title Of Piece
-names: Collabo Rator, Col Laborator
+title: Big Screens 2012
+names: The 2013 Edition
 floodStart: 950
-floodEnd: 700
+floodEnd: 900
 floodRate: -1
-waveHeight: 200
-launchRate: 5
-decayRate: .1
+waveHeight: 50
+launchRate: 2
+decayRate: .001

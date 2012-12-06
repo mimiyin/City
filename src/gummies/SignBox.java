@@ -22,7 +22,7 @@ public class SignBox {
 	PBox2D box2d;
 
 	// Constructor
-	SignBox(PApplet p, PBox2D box2d_, Vec2 pos, int _res, float _tilt, float _color) {
+	SignBox(PApplet p, PBox2D box2d_, Vec2 pos, float _res, float _tilt, float _color) {
 		parent = p;
 		box2d = box2d_;
 		initPos = pos;
@@ -64,7 +64,7 @@ public class SignBox {
 		parent.translate(pos.x, pos.y);
 		parent.rotate(-a);
 		parent.fill(color);
-		parent.stroke(0, 128);
+		parent.noStroke();
 		parent.rect(0, 0, w, h);
 		parent.popMatrix();
 	}

@@ -4,10 +4,11 @@ import processing.core.PShape;
 
 public class Settings {
 	PApplet parent;
-	String title, names;
+	String [] title;
+	String names;
 	float floodStart, floodEnd, floodRate, waveHeight, launchRate, decayRate;
 	
-	Settings(PApplet p, String t, String n, float fS, float fE, float fR, float wH, float lR, float dR) {
+	Settings(PApplet p, String[] t, String n, float fS, float fE, float fR, float wH, float lR, float dR) {
 		parent = p;
 		title = t;
 		names = n;

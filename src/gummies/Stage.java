@@ -23,14 +23,11 @@ public class Stage {
 	PImage skyline;
 	int skyWidth;
 	int skyHeight;
+	boolean multiLineTitle;
 
 	// Credits
-	float tilt;
-	PFont credits;
-	float creditsCenterX;
-	float creditsCenterY;
-	float titleYOffset;
-	float namesYOffset;
+	Sign centerSign;
+
 
 	// /////////////////////////////////////////////////////
 	// ////////////////////////WIND/////////////////////////
@@ -57,12 +54,6 @@ public class Stage {
 	// A reference to our box2d world
 	PBox2D box2d;
 
-	// Create boxes derived from svg file
-	PShape bigfileb, bigfilew;
-
-	// Make boxes from pshapes
-	ArrayList<SignBox> signboxes;
-
 	// Create water line
 	Water water;
 
@@ -88,22 +79,28 @@ public class Stage {
 		// Create the water
 		water = new Water(parent, box2d, settings);
 
-		// Create boxes from square
-		signboxes = new ArrayList<SignBox>();
-
 		// Create skyline
 		initSkyline();
 
-		// Initialize signage
-		initSignage();
+		Vec2 centerSignPos = new Vec2(Gummies.mWidth/2, Gummies.mHeight/2);
+		float tilt = PApplet.PI/36;
+		float titleYOffset = 0;
+		float namesYOffset = 160;
+		float titleTextSize = 256;
+		float namesTextSize = 128;
+		PFont font = parent.createFont("data/AuXDotBitC.ttf", 540);
+		float res = 50;
+		float margin = 100;
+		float signHeight = 500;
+		centerSign = new Sign(parent, box2d, settings, centerSignPos, tilt, titleYOffset, namesYOffset, titleTextSize, namesTextSize, multiLineTitle, font, res, margin, signHeight);
 
 	}
 
 	void run() {
 
 		// Draw the skyline
-		parent.image(skyline, 0, -Gummies.mHeight/2, skyWidth, skyHeight);
-
+		parent.image(skyline, -300, -Gummies.mHeight/2, skyWidth, skyHeight);
+		
 		// Blow the wind
 		launchGummies();
 
@@ -119,44 +116,10 @@ public class Stage {
 
 		// We must always step through time!
 		box2d.step();
-
-		// Display our signboxes
-		for (int i = 0; i < signboxes.size(); i++) {
-			SignBox bx = signboxes.get(i);
-			float toss = parent.random(100);
-			if (toss < parent.noise(t) * .025f) {
-				PApplet.println("Decay");
-				bx.setActive(true);
-			}
-			bx.display();
-		}
-		parent.stroke(0);
-		parent.strokeWeight(100);
-		parent.line(Gummies.mWidth / 2, Gummies.mHeight / 2,
-				Gummies.mWidth / 2 - 100, Gummies.mHeight);
-		parent.strokeWeight(1);
-		parent.noStroke();
-
-		// Boxes that leave the screen, we delete them
-		// (note they have to be deleted from both the box2d world and our list
-		for (int i = signboxes.size() - 1; i >= 0; i--) {
-			SignBox b = signboxes.get(i);
-			if (b.done()) {
-				signboxes.remove(i);
-			}
-		}
-
-		// Display credits
-		parent.pushMatrix();
-		parent.translate(creditsCenterX, creditsCenterY);
-		parent.rotate(tilt);
-		parent.fill(255);
-		parent.textSize(256);
-		parent.text(settings.title, 0, titleYOffset);
-		parent.textSize(128);
-		parent.text(settings.names, 0, namesYOffset);
-		parent.popMatrix();
-
+		
+		//Display credits
+		centerSign.display();
+		
 		// Display water
 		water.display();
 		water.update();
@@ -181,7 +144,12 @@ public class Stage {
 	void loadSettings() {
 		String[] data = parent.loadStrings("settings.txt");
 		String delim = ": ";
-		String title = data[0].split(delim)[1];
+		String [] title = data[0].split(delim)[1].split("_");
+		
+		// Check to see if title is multi-line
+		if(title.length > 1)
+			multiLineTitle = true;
+		
 		String names = data[1].split(delim)[1];
 		float floodStart = PApplet.parseFloat(data[2].split(delim)[1]);
 		float floodEnd = PApplet.parseFloat(data[3].split(delim)[1]);
@@ -195,70 +163,22 @@ public class Stage {
 
 	}
 
-	void initSignage() {
-		// Create and set font for credits
-		// PFont tempCredits = parent.loadFont("data/adbxtra.ttf");
-		credits = parent.createFont("data/AuXDotBitC.ttf", 540);
-		parent.textFont(credits);
-		// Center-align text
-		parent.textAlign(PApplet.CENTER);
-		creditsCenterX = Gummies.mWidth / 2;
-		creditsCenterY = Gummies.mHeight / 2;
-		titleYOffset = -15;
-		namesYOffset = 160;
-
-		// Create background for credits
-		parent.textSize(128);
-		int signWidth = PApplet
-				.parseInt(parent.textWidth(settings.names) + 100);
-		int signHeight = 500;
-		Vec2 signCenter = new Vec2(signWidth / 2 - 25, signHeight / 2);
-		float signXOffset = creditsCenterX - (signWidth / 2);
-		float signYOffset = signHeight/2;
-		int res = 50;
-		// How much to tilt the sign
-		tilt = PApplet.PI / 36;
-
-		for (int col = 0; col <= signWidth; col += res) {
-			for (int row = 0; row < 500; row += res) {
-				Vec2 loc = new Vec2(col, row);
-				// Find the angle of rotation for this point relative to the
-				// center of the sign
-				float direction = PApplet.atan2(signCenter.y - loc.y,
-						signCenter.x - loc.x);
-				// Calculate the distance between this point and the center of
-				// the sign
-				float radius = signCenter.sub(loc).length();
-				// Calculate the x,y location of this point with added tilt,
-				// relative to center of sign
-				// Add offsets so the sign appears in the center
-				loc.x = signCenter.x + radius * PApplet.cos(direction + tilt)
-						+ signXOffset;
-				loc.y = signCenter.y + radius * PApplet.sin(direction + tilt)
-						+ signYOffset;
-				float color = 0;
-				signboxes
-						.add(new SignBox(parent, box2d, loc, res, tilt, color));
-			}
-		}
-	}
+	
 
 	void initSkyline() {
-		skyline = parent.loadImage("data/skyline-saved.jpg");
-		skyWidth = PApplet.parseInt(Gummies.mWidth);
-		skyHeight = PApplet.parseInt(1.5f * Gummies.mHeight);		
+		skyline = parent.loadImage("data/skyline.jpg");
+		skyWidth = PApplet.parseInt(1.05f*Gummies.mWidth);
+		skyHeight = PApplet.parseInt(1.7f*Gummies.mHeight);		
 //		skyline.resize(skyWidth, skyHeight);
 //		skyline.loadPixels();
-//
-//		
-//		for (int i = 0; i < skyWidth; i++) {
-//			for (int j = 0; j < skyHeight; j++) {
+//		for (int i = 0; i < skyline.width; i++) {
+//			for (int j = 0; j < skyline.height; j++) {
+//				int loc = i + j*skyline.width;
 //				int c = skyline.get(i, j);
 //				float bright = parent.brightness(c);
 //				if (bright > 100) {
-//					float dynamicFill = PApplet.map(j, 2 * (skyHeight / 3), skyHeight, 200, 0);
-//					int cellColor = parent.color(dynamicFill);
-//					skyline.set(i, j, cellColor);
+//					float dynamicFill = PApplet.map(j, 2 * (skyWidth / 3), skyHeight, 200, 0);
+//					skyline.pixels[loc] = parent.color(dynamicFill);
 //					}					
 //				}
 //			}
